@@ -1,0 +1,23 @@
+name: Python Package using Conda
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Copy Package
+      run: cp -r default 
+    
+    - name: Commit and push changes
+      run: |
+        sudo git config user.name auto-push
+        sudo git config user.email auto-push@example.com
+        sudo git add .
+        sudo git commit -m "auto push from ci" || echo no commits
+        sudo git push
