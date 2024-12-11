@@ -1,0 +1,8 @@
+Source: testdpkg-sample
+Maintainer: Ken <sample@example.com>
+Build-Depends: cdbs, debhelper
+Standards-Version: 0.1
+ 
+Package: testdpkg-sample
+Architecture: all
+Description: sample
