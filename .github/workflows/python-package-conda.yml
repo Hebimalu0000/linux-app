@@ -1,6 +1,11 @@
 name: Python Package using Conda
 
-on: [push]
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Package Name'
+        required: true
 
 jobs:
   build-linux:
@@ -12,7 +17,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Copy Package
-      run: cp -r default 
+      run: cp -r default ${{ github.event.inputs.name }}
     
     - name: Commit and push changes
       run: |
