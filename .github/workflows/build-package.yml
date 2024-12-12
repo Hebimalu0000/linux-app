@@ -1,0 +1,40 @@
+name: Build Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Package Name'
+        required: true
+      version:
+        description: 'Package Version'
+        required: true
+
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Apt Install
+      run: |
+        sudo apt install fakeroot
+
+    - name: Build Package
+      run: |
+        cd ${{ github.event.inputs.name }}
+        fakeroot dpkg-deb --build package ./build
+        cd build
+        md5sum ${{ github.event.inputs.name }}_${{ github.event.inputs.version }} >> MD5SUM
+        echo "Build Success!"
+    
+    - name: Commit and push changes
+      run: |
+        sudo git config user.name auto-push
+        sudo git config user.email auto-push@example.com
+        sudo git add .
+        sudo git commit -m "auto push from ci" || echo no commits
+        sudo git push
