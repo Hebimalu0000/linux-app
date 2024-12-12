@@ -1,8 +1,8 @@
-Source: PackageName
+Source: port
 Maintainer: @Hebimalu0000 <@Hebimalu0000>
 Build-Depends: cdbs, debhelper
-Standards-Version: 0.1
+Standards-Version: 1.0.0
  
-Package: PackageName
+Package: port
 Architecture: all
-Description: PackageSetumei
+Description: Port is opening.And closeing.And checking.
