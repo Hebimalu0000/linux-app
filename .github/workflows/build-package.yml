@@ -39,3 +39,9 @@ jobs:
         sudo git add .
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push
+        git push -u origin　[ブランチ名]
+
+    - name: Copy Package
+      run: |
+        cd ${{ github.event.inputs.name }}/build
+        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
