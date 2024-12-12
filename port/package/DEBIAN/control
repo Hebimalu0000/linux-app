@@ -1,7 +1,7 @@
 Source: port
 Maintainer: @Hebimalu0000 <@Hebimalu0000>
 Build-Depends: cdbs, debhelper
-Standards-Version: 1.0.0
+Standards-Version: 1
 Package: port
 Architecture: all
 Description: Port is opening.And closeing.And checking.
