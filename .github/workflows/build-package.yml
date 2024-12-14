@@ -26,10 +26,14 @@ jobs:
       run: |
         sudo apt install fakeroot
 
-    - name: Build Package
+    - name: Build Folder
+      continue-on-error: true
       run: |
         cd ${{ github.event.inputs.name }}
         mkdir build
+
+    - name: Build Package
+      run: |
         fakeroot dpkg-deb --build package ./build
         cd build
         md5sum ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb >> MD5SUM
