@@ -72,7 +72,7 @@ jobs:
       run: |
         cd ${{ github.event.inputs.name }}/build
         cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
-        cp MD5SUM ../../pool/main/${{ github.event.inputs.name }}/${{ github.event.inputs.keyword }}/MD5SUM
+        cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
     - name: Commit and push changes
       run: |
