@@ -48,11 +48,6 @@ jobs:
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push
 
-    - name: Create
-      continue-on-error: true
-      run: |
-        sudo git branch build
-
     - name: Make Directory Ver.-1
       continue-on-error: true
       run: |
@@ -79,11 +74,19 @@ jobs:
         cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
         cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
-    - name: Commit and push changes
+    - name: Commit and Push Changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        sudo git checkout build        
-        sudo git config user.name auto-push
-        sudo git config user.email auto-push@example.com
-        sudo git add pool
-        sudo git commit -m "auto push from ci" || echo no commits
-        sudo git pull origin build
+        git fetch origin
+        if ! git branch --list | grep -q build; then
+          git branch build
+        fi
+        git checkout build
+        git config user.name "auto-push"
+        git config user.email "auto-push@example.com"
+        git add pool
+        git commit -m "auto push from ci" || echo "No changes to commit"
+        git pull origin build --rebase
+        git push origin build
+
