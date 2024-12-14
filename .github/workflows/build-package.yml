@@ -80,6 +80,7 @@ jobs:
 
     - name: Commit and push changes
       run: |
+        sudo git checkout HEAD .
         sudo git checkout build
         sudo git config user.name auto-push
         sudo git config user.email auto-push@example.com
