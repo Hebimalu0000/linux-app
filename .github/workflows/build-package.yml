@@ -74,19 +74,12 @@ jobs:
         cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
         cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
-    - name: Commit and Push Changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit and push changes
       run: |
-        sudo git fetch origin
-        if ! sudo git branch --list | grep -q build; then
-          sudo git branch build
-        fi
         sudo git checkout build
-        sudo git config user.name "auto-push"
-        sudo git config user.email "auto-push@example.com"
-        sudo git add pool || { echo "Failed to add files"; exit 1; }
-        sudo git commit -m "auto push from ci" || echo "No changes to commit"
-        sudo git pull origin build --rebase -X theirs || git rebase --abort
-        sudo git push origin build
+        sudo git config user.name auto-push
+        sudo git config user.email auto-push@example.com
+        sudo git add pool
+        sudo git commit -m "auto push from ci" || echo no commits
+        sudo git push build
 
