@@ -48,7 +48,22 @@ jobs:
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push
 
-    - name: Make Directory
+    - name: Make Directory Ver.-1
+      continue-on-error: true
+      run: |
+        mkdir pool/
+
+    - name: Make Directory Ver.0
+      continue-on-error: true
+      run: |
+        mkdir pool/main/
+
+    - name: Make Directory Ver.1
+      continue-on-error: true
+      run: |
+        mkdir pool/main/${{ github.event.inputs.keyword }}/
+
+    - name: Make Directory Ver.2
       continue-on-error: true
       run: |
         mkdir pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
