@@ -78,15 +78,15 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git fetch origin
-        if ! git branch --list | grep -q build; then
-          git branch build
+        sudo git fetch origin
+        if ! sudo git branch --list | grep -q build; then
+          sudo git branch build
         fi
-        git checkout build
-        git config user.name "auto-push"
-        git config user.email "auto-push@example.com"
-        git add pool
-        git commit -m "auto push from ci" || echo "No changes to commit"
-        git pull origin build --rebase
-        git push origin build
+        sudo git checkout build
+        sudo git config user.name "auto-push"
+        sudo git config user.email "auto-push@example.com"
+        sudo git add pool
+        sudo git commit -m "auto push from ci" || echo "No changes to commit"
+        sudo git pull origin build --rebase
+        sudo git push origin build
 
