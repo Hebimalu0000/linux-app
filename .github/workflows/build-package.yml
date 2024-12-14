@@ -85,5 +85,5 @@ jobs:
         sudo git config user.email auto-push@example.com
         sudo git add pool
         sudo git commit -m "auto push from ci" || echo no commits
-        sudo git push origin build
+        sudo git push origin build --force
 
