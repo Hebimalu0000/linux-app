@@ -34,7 +34,8 @@ jobs:
 
     - name: Build Package
       run: |
-        fakeroot dpkg-deb --build ${{ github.event.inputs.name }}/package ${{ github.event.inputs.name }}/build
+        cd ${{ github.event.inputs.name }}
+        fakeroot dpkg-deb --build package ./build
         cd build
         md5sum ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb >> MD5SUM
         echo "Build Success!"
