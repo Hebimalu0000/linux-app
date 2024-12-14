@@ -40,18 +40,13 @@ jobs:
         md5sum ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb >> MD5SUM
         echo "Build Success!"
     
-    - name: Commit and Push Changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit and push changes
       run: |
-        sudo git fetch origin
-        sudo git checkout main
-        sudo git config user.name "auto-push"
-        sudo git config user.email "auto-push@example.com"
-        sudo git add . || { echo "Failed to add files"; exit 1; }
-        sudo git commit -m "auto push from ci" || echo "No changes to commit"
-        sudo git pull origin build --rebase -X theirs || git rebase --abort
-        sudo git push origin build
+        sudo git config user.name auto-push
+        sudo git config user.email auto-push@example.com
+        sudo git add .
+        sudo git commit -m "auto push from ci" || echo no commits
+        sudo git push
 
     - name: Make Directory Ver.-1
       continue-on-error: true
