@@ -9,6 +9,9 @@ on:
       version:
         description: 'Package Version'
         required: true
+      keyword:
+        description: 'Package KeyWord'
+        required: true
 
 jobs:
   build-package:
@@ -39,9 +42,22 @@ jobs:
         sudo git add .
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push
-        git push -u origin　[ブランチ名]
+
+    - name: Make Directory
+      continue-on-error: true
+      run: |
+        mkdir pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
 
     - name: Copy Package
       run: |
         cd ${{ github.event.inputs.name }}/build
-        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+        cp MD5SUM ../../pool/main/${{ github.event.inputs.name }}/${{ github.event.inputs.keyword }}/MD5SUM
+
+    - name: Commit and push changes
+      run: |
+        sudo git config user.name auto-push
+        sudo git config user.email auto-push@example.com
+        sudo git add .
+        sudo git commit -m "auto push from ci" || echo no commits
+        sudo git push -u origin [build]
