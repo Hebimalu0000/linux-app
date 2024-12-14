@@ -80,4 +80,4 @@ jobs:
         sudo git config user.email auto-push@example.com
         sudo git add .
         sudo git commit -m "auto push from ci" || echo no commits
-        sudo git push -u origin [build]
+        sudo git push -u origin build
