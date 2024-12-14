@@ -48,6 +48,16 @@ jobs:
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push
 
+    - name: Create
+      continue-on-error: true
+      run: |
+        sudo git branch build
+
+    - name: Checkout
+      continue-on-error: true
+      run: |
+        sudo git checkout build        
+
     - name: Make Directory Ver.-1
       continue-on-error: true
       run: |
@@ -74,11 +84,6 @@ jobs:
         cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
         cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
-    - name: Create
-      continue-on-error: true
-      run: |
-        sudo git branch build
-        
     - name: Commit and push changes
       run: |
         sudo git config user.name auto-push
