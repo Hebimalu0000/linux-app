@@ -84,6 +84,7 @@ jobs:
         sudo git checkout build        
         sudo git config user.name auto-push
         sudo git config user.email auto-push@example.com
+        sudo git pull
         sudo git add pool
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push -u origin build
