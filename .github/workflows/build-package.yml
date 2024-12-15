@@ -48,48 +48,32 @@ jobs:
         sudo git commit -m "auto push from ci" || echo no commits
         sudo git push
 
-    - name: Create Branch
+    - name: Make Directory
       continue-on-error: true
       run: |
-        sudo git branch
-        git checkout -b build
-
-    - name: Make Directory Ver.-1
-      continue-on-error: true
-      run: |
-        mkdir pool/
-
-    - name: Make Directory Ver.0
-      continue-on-error: true
-      run: |
-        mkdir pool/main/
-
-    - name: Make Directory Ver.1
-      continue-on-error: true
-      run: |
-        mkdir pool/main/${{ github.event.inputs.keyword }}/
-
-    - name: Make Directory Ver.2
-      continue-on-error: true
-      run: |
-        mkdir pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
+        mkdir -p build/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
 
     - name: Copy Package
       run: |
         cd ${{ github.event.inputs.name }}/build
-        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
-        cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
+        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../build/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+        cp MD5SUM ../../build/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
-    - name: Remove other file and directory
+    - name: Push to build branch
       run: |
-        ls | grep -i -v -E 'pool|.git' | xargs sudo rm -rf
-        ls -la
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Commit and push changes
-      run: |
-        sudo git config user.name auto-push
-        sudo git config user.email auto-push@example.com
-        sudo git add pool
-        sudo git commit -m "auto push from ci" || echo no commits
-        sudo git push origin build --force
+        # build ブランチをチェックアウト
+        git checkout -b build origin/build || git checkout build
+
+        # 必要なフォルダーをコピー
+        rsync -a --delete build/ .
+
+        # 変更をコミット
+        git add .
+        git commit -m "Update build branch from build" || echo "No changes to commit"
+
+        # 変更をプッシュ
+        git push origin build
 
