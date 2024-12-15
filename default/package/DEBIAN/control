@@ -1,7 +1,0 @@
-Source: PackageName
-Maintainer: @Hebimalu0000 <@Hebimalu0000>
-Build-Depends: cdbs, debhelper
-Version: Version
-Package: PackageName
-Architecture: all
-Description: PackageSetumei
