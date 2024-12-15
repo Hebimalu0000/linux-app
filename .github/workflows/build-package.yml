@@ -51,29 +51,38 @@ jobs:
     - name: Make Directory
       continue-on-error: true
       run: |
-        mkdir -p build/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
+        mkdir -p power-root/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
 
     - name: Copy Package
       run: |
         cd ${{ github.event.inputs.name }}/build
-        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../build/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
-        cp MD5SUM ../../build/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
+        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../power-root/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+        cp MD5SUM ../../power-root/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
-    - name: Push to build branch
+    - name: Configure Git
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-        # build ブランチをチェックアウト
-        git checkout -b build origin/build || git checkout build
+    - name: Ensure build branch exists
+      run: |
+        if git ls-remote --exit-code --heads origin build; then
+          git checkout build
+        else
+          git checkout --orphan build
+          git reset --hard
+          git commit --allow-empty -m "Initial commit for build branch"
+          git push origin build
+        fi
 
-        # 必要なフォルダーをコピー
-        rsync -a --delete build/ .
+    - name: Copy power-root to build branch
+      run: |
+        rsync -a --delete power-root/ .
 
-        # 変更をコミット
         git add .
-        git commit -m "Update build branch from build" || echo "No changes to commit"
+        git commit -m "Update build branch from specific-folder" || echo "No changes to commit"
 
-        # 変更をプッシュ
+    - name: Push to build branch
+      run: |
         git push origin build
 
