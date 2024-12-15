@@ -50,7 +50,7 @@ jobs:
 
     - name: Create Branch
       continue-on-error: true
-      run: sudo git branch build
+      run: sudo git checkout -b build origin/build
 
     - name: Make Directory Ver.-1
       continue-on-error: true
