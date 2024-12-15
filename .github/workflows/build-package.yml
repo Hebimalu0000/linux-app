@@ -70,16 +70,17 @@ jobs:
 
         if git ls-remote --exit-code --heads origin build; then
           sudo git stash -u
-          sudo rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
-          sudo rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+          sudo rm -f pool/main/p/port/MD5SUM
+          sudo rm -f pool/main/p/port/port_1.0.0_all.deb
           git checkout build
-          git stash pop
+          git stash apply
         else
           git checkout --orphan build
           git reset --hard
           git commit --allow-empty -m "Initial commit for build branch"
           git push origin build
         fi
+
 
     - name: Copy power-root to build branch
       run: |
