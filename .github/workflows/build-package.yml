@@ -79,7 +79,7 @@ jobs:
 
     - name: Copy power-root to build branch
       run: |
-        rsync -a --delete power-root/ .
+        sudo rsync -a --delete power-root/ .
 
         git add .
         git commit -m "Update build branch from specific-folder" || echo "No changes to commit"
