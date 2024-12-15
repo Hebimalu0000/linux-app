@@ -51,13 +51,13 @@ jobs:
     - name: Make Directory
       continue-on-error: true
       run: |
-        mkdir -p power-root/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
+        mkdir -p pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
 
     - name: Copy Package
       run: |
         cd ${{ github.event.inputs.name }}/build
-        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../power-root/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
-        cp MD5SUM ../../power-root/pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
+        cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+        cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
     - name: Configure Git
       run: |
@@ -79,7 +79,7 @@ jobs:
 
     - name: Copy power-root to build branch
       run: |
-        sudo cp -rf power-root/ .
+        ls | grep -i -v -E 'pool|.git' | xargs sudo rm -rf
         
         git add .
         git commit -m "Update build branch from specific-folder" || echo "No changes to commit"
