@@ -80,8 +80,8 @@ jobs:
 
     - name: Remove other file and directory
       run: |
-        find ./ -mindepth 1 -maxdepth 1 ! -name 'pool' -o ! -name '.git' -exec sudo rm -r {} +
-        ls
+        ls | grep -i -v -E 'pool|.git' | xargs sudo rm -rf
+        ls -la
 
     - name: Commit and push changes
       run: |
