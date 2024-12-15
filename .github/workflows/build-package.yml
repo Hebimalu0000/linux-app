@@ -24,13 +24,13 @@ jobs:
 
     - name: Apt Install
       run: |
+        sudo apt update
         sudo apt install fakeroot
 
     - name: Build Folder
-      continue-on-error: true
       run: |
         cd ${{ github.event.inputs.name }}
-        mkdir build
+        mkdir -p build
 
     - name: Build Package
       run: |
@@ -42,14 +42,13 @@ jobs:
     
     - name: Commit and push changes
       run: |
-        sudo git config user.name auto-push
-        sudo git config user.email auto-push@example.com
-        sudo git add .
-        sudo git commit -m "auto push from ci" || echo no commits
-        sudo git push
+        git config user.name "auto-push"
+        git config user.email "auto-push@example.com"
+        git add .
+        git commit -m "auto push from ci" || echo "No changes to commit"
+        git push
 
     - name: Make Directory
-      continue-on-error: true
       run: |
         mkdir -p pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/
 
@@ -59,21 +58,15 @@ jobs:
         cp ${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
         cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
-    - name: Configure Git
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
     - name: Ensure build branch exists
       run: |
         git fetch origin build:build || echo "No remote build branch found"
-
         if git ls-remote --exit-code --heads origin build; then
-          sudo git stash -u
-          sudo rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
-          sudo rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+          git stash -u
+          rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
+          rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
           git checkout build
-          git stash apply
+          git stash apply || echo "Stash apply failed, no changes to restore"
         else
           git checkout --orphan build
           git reset --hard
@@ -81,15 +74,12 @@ jobs:
           git push origin build
         fi
 
-
     - name: Copy power-root to build branch
       run: |
-        ls | grep -i -v -E 'pool|.git' | xargs sudo rm -rf
-        
+        ls | grep -i -v -E 'pool|.git' | xargs rm -rf
         git add .
         git commit -m "Update build branch from specific-folder" || echo "No changes to commit"
 
     - name: Push to build branch
       run: |
         git push origin build
-
