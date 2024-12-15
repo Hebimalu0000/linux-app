@@ -79,7 +79,7 @@ jobs:
 
     - name: Copy power-root to build branch
       run: |
-        sudo cp -r power-root/ .
+        sudo cp -rf power-root/ .
         
         git add .
         git commit -m "Update build branch from specific-folder" || echo "No changes to commit"
