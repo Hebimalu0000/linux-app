@@ -79,7 +79,7 @@ jobs:
         cp MD5SUM ../../pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
 
     - name: Remove other file and directory
-      run: find ./ -mindepth 1 -maxdepth 1 ! -name 'pool','.git' -exec sudo rm -r {} +
+      run: find ./ -mindepth 1 -maxdepth 1 ! -name 'pool' -o ! -name '.git' -exec sudo rm -r {} +
 
     - name: Commit and push changes
       run: |
