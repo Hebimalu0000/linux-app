@@ -52,7 +52,7 @@ jobs:
       continue-on-error: true
       run: |
         sudo git branch
-        git checkout build
+        git checkout -b build
 
     - name: Make Directory Ver.-1
       continue-on-error: true
