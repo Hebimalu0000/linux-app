@@ -66,6 +66,8 @@ jobs:
 
     - name: Ensure build branch exists
       run: |
+        git fetch origin build:build || echo "No remote build branch found"
+
         if git ls-remote --exit-code --heads origin build; then
           git checkout build
         else
