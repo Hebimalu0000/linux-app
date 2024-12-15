@@ -70,9 +70,9 @@ jobs:
 
         if git ls-remote --exit-code --heads origin build; then
           sudo git stash -u
-          git checkout build
           sudo rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/MD5SUM
           sudo rm -f pool/main/${{ github.event.inputs.keyword }}/${{ github.event.inputs.name }}/${{ github.event.inputs.name }}_${{ github.event.inputs.version }}_all.deb
+          git checkout build
           git stash pop
         else
           git checkout --orphan build
