@@ -69,7 +69,9 @@ jobs:
         git fetch origin build:build || echo "No remote build branch found"
 
         if git ls-remote --exit-code --heads origin build; then
+          sudo git stash -u
           git checkout build
+          sudo git stash pop
         else
           git checkout --orphan build
           git reset --hard
