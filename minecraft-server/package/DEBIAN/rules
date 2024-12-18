@@ -4,4 +4,5 @@ include /usr/share/cdbs/1/rules/debhelper.mk
  
 install/<PackageName>::
        install -pd $(DEB_DESTDIR)/usr/bin
-       install -pm 755 PackageName.sh $(DEB_DESTDIR)/usr/bin
+       install -pm 755 minecraft-server.sh $(DEB_DESTDIR)/usr/bin
+       install -pm 755 minecraft-server.list $(DEB_DESTDIR)/usr/bin/minecraft-server
