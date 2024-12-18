@@ -1,0 +1,16 @@
+name: Minecraft Server List
+
+on:
+  workflow_dispatch:
+
+jobs:
+  my_job:
+    name: deploy to staging
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5.3.0
+
+      
+          
