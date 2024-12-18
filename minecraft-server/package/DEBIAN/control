@@ -1,7 +1,7 @@
-Source: PackageName
+Source: minecraft-server
 Maintainer: @Hebimalu0000 <@Hebimalu0000>
 Build-Depends: cdbs, debhelper
-Version: Version
-Package: PackageName
+Version: 1.0.0
+Package: minecraft-server
 Architecture: all
-Description: PackageSetumei
+Description: This package is Download Minecraft Server
