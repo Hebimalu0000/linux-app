@@ -2,7 +2,7 @@
 
 # 引数チェック
 if [ "$#" -lt 4 ]; then
-    echo "使い方: $0 download -jar <Version> -dir <Directory>"
+    echo "Uses: $0 download -jar <Version> -dir <Directory>"
     exit 1
 fi
 
