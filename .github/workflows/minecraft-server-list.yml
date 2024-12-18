@@ -16,7 +16,9 @@ jobs:
         run: |
           pip install pandas
           cd minecraft-server
+          wget https://gist.githubusercontent.com/cliffano/77a982a7503669c3e1acb0a0cf6127e9/raw/1868a831baa6ab466e506e638116e35ceaf025cd/minecraft-server-jar-downloads.md
           python package.py
+          rm minecraft-server-jar-downloads.md
 
       - name: Commit and push changes
         run: |
