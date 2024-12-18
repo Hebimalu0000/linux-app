@@ -1,8 +1,9 @@
 import pandas as pd
+from io import StringIO
 
 def markdown_table_to_list(md_table):
     # MarkdownテーブルをDataFrameに変換
-    df = pd.read_csv(pd.compat.StringIO(md_table), sep="|", engine="python", skipinitialspace=True)
+    df = pd.read_csv(StringIO(md_table), sep="|", engine="python", skipinitialspace=True)
     
     # 不要なカラム（空白など）を削除
     df = df.drop(columns=[col for col in df.columns if col.strip() == ""])
